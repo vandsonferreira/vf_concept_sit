@@ -22,7 +22,19 @@
     h1 {
       text-align: center;
       font-size: 2rem;
-      margin: 20px 0;
+      margin: 20px 10px;
+    }
+    .search-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .search-container input {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
     }
     .produtos {
       display: flex;
@@ -75,6 +87,23 @@
       font-size: 0.9rem;
     }
   </style>
+
+  <script>
+    function filtrarProdutos() {
+      var input = document.getElementById('searchInput').value.toLowerCase();
+      var produtos = document.getElementsByClassName('produto');
+
+      for (var i = 0; i < produtos.length; i++) {
+        var nome = produtos[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
+        if (nome.includes(input)) {
+          produtos[i].style.display = '';
+        } else {
+          produtos[i].style.display = 'none';
+        }
+      }
+    }
+  </script>
+
 </head>
 <body>
   <header>
@@ -82,6 +111,11 @@
   </header>
 
   <h1>Produtos VF Imports</h1>
+
+  <div class="search-container">
+    <input type="text" id="searchInput" onkeyup="filtrarProdutos()" placeholder="Pesquisar produtos...">
+  </div>
+
   <section class="produtos">
     <div class="produto">
       <div class="galeria">
@@ -90,9 +124,9 @@
       </div>
       <h3>Óculos Estiloso</h3>
       <p>Design moderno com proteção UV.</p>
-      <p><strong>R$ 45,00</strong></p>
+      <p><strong>R$ 99,90</strong></p>
       <a class="botao" href="https://mpago.la/1x9oVhM">Comprar agora</a>
-      <a class="botao whats" href="https://wa.me/5589981242381?text=Quero%20comprar%20o%20Óculos%20Estiloso">WhatsApp</a>
+      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Óculos%20Estiloso">WhatsApp</a>
     </div>
 
     <div class="produto">
@@ -102,8 +136,8 @@
       <h3>Copo Personalizado</h3>
       <p>Copo de acrílico com arte exclusiva.</p>
       <p><strong>R$ 29,90</strong></p>
-      <a class="botao" href="https://mpago.la/1x9oVhM">Comprar agora</a>
-      <a class="botao whats" href="https://wa.me/5589981242381?text=Quero%20comprar%20o%20Copo%20Personalizado">WhatsApp</a>
+      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
+      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Copo%20Personalizado">WhatsApp</a>
     </div>
 
     <div class="produto">
@@ -115,7 +149,7 @@
       <p>Boné com ajuste e bordado frontal.</p>
       <p><strong>R$ 59,90</strong></p>
       <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://wa.me/5589981242381?text=Quero%20comprar%20o%20Bon%C3%A9%20VF%20Classic">WhatsApp</a>
+      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Bon%C3%A9%20VF%20Classic">WhatsApp</a>
     </div>
 
     <div class="produto">
@@ -127,7 +161,7 @@
       <p>Conforto e estilo no dia a dia.</p>
       <p><strong>R$ 119,90</strong></p>
       <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://wa.me/5589981242381?text=Quero%20comprar%20a%20Cal%C3%A7a%20Jogger">WhatsApp</a>
+      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20a%20Cal%C3%A7a%20Jogger">WhatsApp</a>
     </div>
 
     <div class="produto">
@@ -137,15 +171,15 @@
       </div>
       <h3>Camisa Casual</h3>
       <p>Perfeita pra qualquer ocasião.</p>
-      <p><strong>R$ 40,00</strong></p>
-      <a class="botao" href="https://mpago.la/2WrrUmX">Comprar agora</a>
-      <a class="botao whats" href="https://wa.me/5589981242381?text=Quero%20comprar%20a%20Camisa%20Casual">WhatsApp</a>
+      <p><strong>R$ 79,90</strong></p>
+      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
+      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20a%20Camisa%20Casual">WhatsApp</a>
     </div>
   </section>
 
   <footer>
     <p>Contato: vfconcept01@gmail.com</p>
-    <p>Siga nas redes sociais: <strong>@vf.imports_store</strong></p>
+    <p>Siga nas redes sociais: <strong>@vf_imports</strong></p>
     <p>© 2025 VF Imports - todos os direitos reservados.</p>
   </footer>
 </body>
