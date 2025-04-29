@@ -12,17 +12,37 @@
       color: #000;
     }
     header {
-      text-align: center;
-      padding: 40px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
       background-color: #000;
+      color: #fff;
     }
     header img {
-      max-width: 200px;
+      max-width: 120px;
+    }
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+    }
+    .cart-icon img {
+      width: 40px;
+    }
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
     }
     h1 {
       text-align: center;
       font-size: 2rem;
-      margin: 20px 10px;
+      margin: 20px 0;
     }
     .search-container {
       text-align: center;
@@ -77,9 +97,24 @@
       text-decoration: none;
       border-radius: 5px;
       font-size: 0.9rem;
+      cursor: pointer;
     }
     .whats {
       background-color: #25D366;
+    }
+    #carrinho {
+      display: none;
+      position: fixed;
+      right: 20px;
+      top: 80px;
+      background: #fff;
+      border: 1px solid #000;
+      padding: 20px;
+      width: 300px;
+      max-height: 400px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      z-index: 1000;
     }
     footer {
       text-align: center;
@@ -89,6 +124,30 @@
   </style>
 
   <script>
+    var carrinho = [];
+    
+    function adicionarAoCarrinho(nome, preco) {
+      carrinho.push({ nome: nome, preco: preco });
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      var lista = '';
+      var total = 0;
+      for (var i = 0; i < carrinho.length; i++) {
+        lista += '<p>' + carrinho[i].nome + ' - R$ ' + carrinho[i].preco.toFixed(2) + '</p>';
+        total += carrinho[i].preco;
+      }
+      document.getElementById('carrinho-lista').innerHTML = lista;
+      document.getElementById('carrinho-total').innerText = 'Total: R$ ' + total.toFixed(2);
+      document.getElementById('carrinho-contador').innerText = carrinho.length;
+    }
+
+    function toggleCarrinho() {
+      var carrinhoDiv = document.getElementById('carrinho');
+      carrinhoDiv.style.display = carrinhoDiv.style.display === 'block' ? 'none' : 'block';
+    }
+
     function filtrarProdutos() {
       var input = document.getElementById('searchInput').value.toLowerCase();
       var produtos = document.getElementsByClassName('produto');
@@ -102,13 +161,45 @@
         }
       }
     }
+
+    function finalizarCompra() {
+      alert("Em breve você será redirecionado para pagamento automático!");
+    }
+
+    function finalizarNoWhats() {
+      var numero = "5589981242381"; // número do WhatsApp com DDD
+      var mensagem = "Olá, quero comprar:\n";
+      var total = 0;
+
+      for (var i = 0; i < carrinho.length; i++) {
+        mensagem += "- " + carrinho[i].nome + " (R$ " + carrinho[i].preco.toFixed(2) + ")\n";
+        total += carrinho[i].preco;
+      }
+
+      mensagem += "\nTotal: R$ " + total.toFixed(2);
+      var url = "https://api.whatsapp.com/send?phone=" + numero + "&text=" + encodeURIComponent(mensagem);
+      window.open(url, "_blank");
+    }
   </script>
 
 </head>
+
 <body>
   <header>
     <img src="logo.jpg" alt="Logo VF Imports">
+    <div class="cart-icon" onclick="toggleCarrinho()">
+      <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Carrinho">
+      <div class="cart-count" id="carrinho-contador">0</div>
+    </div>
   </header>
+
+  <div id="carrinho">
+    <h3>Carrinho</h3>
+    <div id="carrinho-lista"></div>
+    <p id="carrinho-total">Total: R$ 0,00</p>
+    <button class="botao" onclick="finalizarCompra()">Pagar Online</button>
+    <button class="botao whats" onclick="finalizarNoWhats()">Falar no WhatsApp</button>
+  </div>
 
   <h1>Produtos VF Imports</h1>
 
@@ -119,14 +210,11 @@
   <section class="produtos">
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Óculos 1">
-        <img src="https://via.placeholder.com/70x70" alt="Óculos 2">
+        <img src="https://via.placeholder.com/70x70" alt="Óculos">
       </div>
       <h3>Óculos Estiloso</h3>
-      <p>Design moderno com proteção UV.</p>
-      <p><strong>R$ 99,90</strong></p>
-      <a class="botao" href="https://mpago.la/1x9oVhM">Comprar agora</a>
-      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Óculos%20Estiloso">WhatsApp</a>
+      <p>R$ 99,90</p>
+      <button class="botao" onclick="adicionarAoCarrinho('Óculos Estiloso', 99.90)">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
@@ -134,46 +222,35 @@
         <img src="https://via.placeholder.com/70x70" alt="Copo">
       </div>
       <h3>Copo Personalizado</h3>
-      <p>Copo de acrílico com arte exclusiva.</p>
-      <p><strong>R$ 29,90</strong></p>
-      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Copo%20Personalizado">WhatsApp</a>
+      <p>R$ 29,90</p>
+      <button class="botao" onclick="adicionarAoCarrinho('Copo Personalizado', 29.90)">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Boné 1">
-        <img src="https://via.placeholder.com/70x70" alt="Boné 2">
+        <img src="https://via.placeholder.com/70x70" alt="Boné">
       </div>
       <h3>Boné VF Classic</h3>
-      <p>Boné com ajuste e bordado frontal.</p>
-      <p><strong>R$ 59,90</strong></p>
-      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20o%20Bon%C3%A9%20VF%20Classic">WhatsApp</a>
+      <p>R$ 59,90</p>
+      <button class="botao" onclick="adicionarAoCarrinho('Boné VF Classic', 59.90)">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Calça 1">
-        <img src="https://via.placeholder.com/70x70" alt="Calça 2">
+        <img src="https://via.placeholder.com/70x70" alt="Calça">
       </div>
       <h3>Calça Jogger</h3>
-      <p>Conforto e estilo no dia a dia.</p>
-      <p><strong>R$ 119,90</strong></p>
-      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20a%20Cal%C3%A7a%20Jogger">WhatsApp</a>
+      <p>R$ 119,90</p>
+      <button class="botao" onclick="adicionarAoCarrinho('Calça Jogger', 119.90)">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Camisa 1">
-        <img src="https://via.placeholder.com/70x70" alt="Camisa 2">
+        <img src="https://via.placeholder.com/70x70" alt="Camisa">
       </div>
       <h3>Camisa Casual</h3>
-      <p>Perfeita pra qualquer ocasião.</p>
-      <p><strong>R$ 79,90</strong></p>
-      <a class="botao" href="https://link.mercadopago.com.br/vfimports">Comprar agora</a>
-      <a class="botao whats" href="https://api.whatsapp.com/send?phone=5589981242381&text=Quero%20comprar%20a%20Camisa%20Casual">WhatsApp</a>
+      <p>R$ 79,90</p>
+      <button class="botao" onclick="adicionarAoCarrinho('Camisa Casual', 79.90)">Adicionar ao Carrinho</button>
     </div>
   </section>
 
@@ -182,5 +259,6 @@
     <p>Siga nas redes sociais: <strong>@vf_imports</strong></p>
     <p>© 2025 VF Imports - todos os direitos reservados.</p>
   </footer>
+
 </body>
 </html>
