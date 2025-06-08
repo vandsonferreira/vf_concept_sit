@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VF Imports</title>
   <style>
     body {
@@ -165,13 +165,6 @@
       cursor: pointer;
     }
 
-    #total-valor {
-      font-weight: bold;
-      margin: 10px 0;
-      text-align: right;
-      font-size: 1.1rem;
-    }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -180,21 +173,10 @@
   </style>
 
   <script>
-    // Array de produtos com nome e preço
-    var produtosInfo = {
-      'Óculos Estiloso': 20.00,
-      'Copo Personalizado': 15.50,
-      'Boné VF Classic': 30.00,
-      'Calça Jogger': 40.00,
-      'Camisa Casual': 25.00
-    };
-
-    // Carrinho guarda objetos {nome, preco}
     var carrinho = [];
 
     function adicionarAoCarrinho(nome) {
-      var preco = produtosInfo[nome];
-      carrinho.push({ nome: nome, preco: preco });
+      carrinho.push(nome);
       atualizarCarrinho();
     }
 
@@ -205,17 +187,11 @@
 
     function atualizarCarrinho() {
       var lista = '';
-      var total = 0;
-
       for (var i = 0; i < carrinho.length; i++) {
-        lista += '<p>' + carrinho[i].nome + ' - R$ ' + carrinho[i].preco.toFixed(2) +
-                 ' <button class="remover-btn" onclick="removerDoCarrinho(' + i + ')">x</button></p>';
-        total += carrinho[i].preco;
+        lista += '<p>' + carrinho[i] + ' <button class="remover-btn" onclick="removerDoCarrinho(' + i + ')">x</button></p>';
       }
-
       document.getElementById('carrinho-lista').innerHTML = lista;
       document.getElementById('carrinho-contador').innerText = carrinho.length;
-      document.getElementById('total-valor').innerText = 'Total: R$ ' + total.toFixed(2);
     }
 
     function toggleCarrinho() {
@@ -241,17 +217,12 @@
       }
     }
 
-    function finalizarCompra() {
-      alert("Em breve você será redirecionado para pagamento online.");
-    }
-
     function finalizarNoWhats() {
       var numero = "5589981242381";
       var mensagem = "Olá, quero comprar:\n";
       for (var i = 0; i < carrinho.length; i++) {
-        mensagem += "- " + carrinho[i].nome + " (R$ " + carrinho[i].preco.toFixed(2) + ")\n";
+        mensagem += "- " + carrinho[i] + "\n";
       }
-      mensagem += "\nTotal: R$ " + carrinho.reduce((acc, item) => acc + item.preco, 0).toFixed(2);
       var url = "https://api.whatsapp.com/send?phone=" + numero + "&text=" + encodeURIComponent(mensagem);
       window.open(url, "_blank");
     }
@@ -260,14 +231,14 @@
 
 <body>
   <header>
-    <img src="logo.jpg" alt="Logo VF Imports" />
+    <img src="logo.jpg" alt="Logo VF Imports">
   </header>
 
   <div class="top-bar">
     <div class="barra-central">
-      <input type="text" id="searchInput" onkeyup="filtrarProdutos()" placeholder="Pesquisar produtos..." />
+      <input type="text" id="searchInput" onkeyup="filtrarProdutos()" placeholder="Pesquisar produtos...">
       <div class="cart-icon" onclick="toggleCarrinho()">
-        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Carrinho" />
+        <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Carrinho">
         <div class="cart-count" id="carrinho-contador">0</div>
       </div>
     </div>
@@ -277,55 +248,53 @@
     <button class="fechar-carrinho" onclick="fecharCarrinho()">×</button>
     <h3>Carrinho</h3>
     <div id="carrinho-lista"></div>
-    <div id="total-valor">Total: R$ 0.00</div>
-    <button class="botao" onclick="finalizarCompra()">Pagar Online</button>
     <button class="botao whats" onclick="finalizarNoWhats()">WhatsApp</button>
   </div>
 
   <section class="produtos">
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Óculos" />
+        <img src="https://via.placeholder.com/70x70" alt="Óculos">
       </div>
       <h3>Óculos Estiloso</h3>
-      <p>Design moderno com proteção UV.</p>
-      <button class="botao" onclick="adicionarAoCarrinho('Óculos Estiloso')">Adicionar ao Carrinho</button>
+      <p>Design moderno com proteção UV. <strong>R$ 89,90</strong></p>
+      <button class="botao" onclick="adicionarAoCarrinho('Óculos Estiloso - R$ 89,90')">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Copo" />
+        <img src="https://via.placeholder.com/70x70" alt="Copo">
       </div>
       <h3>Copo Personalizado</h3>
-      <p>Copo de acrílico com arte exclusiva.</p>
-      <button class="botao" onclick="adicionarAoCarrinho('Copo Personalizado')">Adicionar ao Carrinho</button>
+      <p>Copo de acrílico com arte exclusiva. <strong>R$ 34,90</strong></p>
+      <button class="botao" onclick="adicionarAoCarrinho('Copo Personalizado - R$ 34,90')">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Boné" />
+        <img src="https://via.placeholder.com/70x70" alt="Boné">
       </div>
       <h3>Boné VF Classic</h3>
-      <p>Boné confortável com bordado frontal.</p>
-      <button class="botao" onclick="adicionarAoCarrinho('Boné VF Classic')">Adicionar ao Carrinho</button>
+      <p>Boné confortável com bordado frontal. <strong>R$ 59,90</strong></p>
+      <button class="botao" onclick="adicionarAoCarrinho('Boné VF Classic - R$ 59,90')">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Calça" />
+        <img src="https://via.placeholder.com/70x70" alt="Calça">
       </div>
       <h3>Calça Jogger</h3>
-      <p>Conforto e estilo para o dia a dia.</p>
-      <button class="botao" onclick="adicionarAoCarrinho('Calça Jogger')">Adicionar ao Carrinho</button>
+      <p>Conforto e estilo para o dia a dia. <strong>R$ 129,90</strong></p>
+      <button class="botao" onclick="adicionarAoCarrinho('Calça Jogger - R$ 129,90')">Adicionar ao Carrinho</button>
     </div>
 
     <div class="produto">
       <div class="galeria">
-        <img src="https://via.placeholder.com/70x70" alt="Camisa" />
+        <img src="https://via.placeholder.com/70x70" alt="Camisa">
       </div>
       <h3>Camisa Casual</h3>
-      <p>Perfeita para qualquer ocasião.</p>
-      <button class="botao" onclick="adicionarAoCarrinho('Camisa Casual')">Adicionar ao Carrinho</button>
+      <p>Perfeita para qualquer ocasião. <strong>R$ 69,90</strong></p>
+      <button class="botao" onclick="adicionarAoCarrinho('Camisa Casual - R$ 69,90')">Adicionar ao Carrinho</button>
     </div>
   </section>
 
